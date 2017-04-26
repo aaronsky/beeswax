@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "sourceMap": true,
+        "pretty": true,
+        "rootDir": "./app",
+        "outDir": "./dist"
+    },
+    "exclude": [
+        ".github/",
+        ".vscode/",
+        "node_modules/",
+        "app/public/"
+    ]
+}
