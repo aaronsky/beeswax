@@ -1,6 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const webpackMerge = require('webpack-merge');
+import * as path from 'path';
+
+import webpack from 'webpack';
+import webpackMerge from 'webpack-merge';
+import nodeExternals from 'webpack-node-externals';
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -51,18 +53,21 @@ const base = {
 const targets = [{
     name: 'app',
     target: 'node',
-    path: path.resolve(appPath, 'index.ts')
+    path: path.resolve(appPath, 'index.ts'),
+    externals: [nodeExternals()]
 }, {
     name: 'client',
     target: 'web',
-    path: path.resolve(publicPath, 'scripts', 'index.ts')
+    path: path.resolve(publicPath, 'scripts', 'index.ts'),
+    externals: []
 }]
 
 const configs = targets.map(target => webpackMerge(base, {
     target: target.target,
     entry: {
         [target.name]: target.path
-    }
+    },
+    externals: target.externals
 }));
 
-module.exports = configs;
+export default configs;
