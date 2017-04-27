@@ -28,6 +28,7 @@
   "homepage": "https://github.com/aaronsky/bumble#readme",
   "devDependencies": {
     "@types/koa": "^2.0.39",
+    "@types/koa-bodyparser": "^3.0.23",
     "@types/koa-router": "^7.0.22",
     "@types/lodash": "^4.14.63",
     "ava": "^0.19.1",
