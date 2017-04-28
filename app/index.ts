@@ -7,9 +7,7 @@ import * as path from 'path';
 
 dotenv.config();
 
-import { combineRouters } from './routes';
-// TODO: Temporary measure, see block comment below
-import { githubRouter } from './scm/remote/github';
+import routes from './routes';
 
 const viewsPath = path.resolve(__dirname, 'views');
 const publicPath = path.resolve(__dirname, 'public');
@@ -21,14 +19,7 @@ react(app, {
 });
 
 app.use(bodyParser());
-app.use(combineRouters([
-    /*
-    scm.routes(),
-    reporters.routes(),
-    plugins.routes()
-    */
-    githubRouter
-]));
+app.use(routes);
 app.use(staticCache(publicPath));
 
 const server = app.listen(process.env.BUMBLE_PORT, process.env.BUMBLE_HOST, () => {
