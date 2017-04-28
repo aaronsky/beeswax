@@ -20,11 +20,11 @@ namespace Github {
             ctx.status = 401;
         } else {
             ctx.status = 200;
-            const eventType = ctx.request.headers['x-github-event'];
+            const eventType = ctx.request.headers['x-github-event'] as string;
             const raw = ctx.request.body;
             const repository = new Git.Repository(raw['repository']);
             const commits = raw.commits.map(rawCommit => new Git.Commit(rawCommit));
-            SCM.emit(event, repository, commits, raw);
+            SCM.emit(eventType, repository, commits, raw);
         }
         await next();
     }

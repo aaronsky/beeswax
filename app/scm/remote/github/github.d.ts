@@ -5,13 +5,13 @@ declare namespace Github {
         full_name: string;
         owner: IContributor;
         private: boolean;
-        html_url: URL;
+        html_url: string;
         description: string;
         fork: boolean;
         created_at: number;
         updated_at: string;
         pushed_at: number;
-        git_url: URL;
+        git_url: string;
         size: number;
         language: string;
         default_branch: string;
@@ -19,11 +19,13 @@ declare namespace Github {
     }
     export type UserType = 'User';
     export interface IContributor {
+        id?: number;
         name: string;
         email: string;
+        username?: string;
         date?: string;
-        html_url?: URL;
-        avatar_url?: URL;
+        html_url?: string;
+        avatar_url?: string;
         type?: UserType;
     }
     export interface ICommit {
@@ -32,7 +34,7 @@ declare namespace Github {
         distinct: boolean;
         message: string;
         timestamp: string;
-        url: URL;
+        url: string;
         author: IContributor;
         committer: IContributor;
         added: string[];
