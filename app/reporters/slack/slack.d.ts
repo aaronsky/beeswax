@@ -1317,12 +1317,19 @@ declare module slack {
     }
 
     export namespace EventsApi {
-        export interface Event {
+        export interface BaseEvent {
+            type: 'url_verification' | 'event_callback';
             token: string;
+        }
+        export interface UrlVerificationEvent extends BaseEvent {
+            type: 'url_verification';
+            challenge: string;
+        }
+        export interface Event extends BaseEvent {
             team_id: string;
             api_app_id: string;
             event: InnerEvent;
-            type: 'event_callback' | 'url_verification';
+            type: 'event_callback';
             authed_users: string[];
             event_id: string;
             event_time: string;
@@ -1619,11 +1626,6 @@ declare module slack {
         export interface TeamRenameEvent {
             type: 'team_rename';
             name: string;
-        }
-        export interface UrlVerificationEvent {
-            type: 'url_verification';
-            token: string;
-            challenge: string;
         }
         export interface UserChangeEvent {
             type: 'user_change';
