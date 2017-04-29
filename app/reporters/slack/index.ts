@@ -34,21 +34,28 @@ namespace Slack {
         const code = ctx.query.code;
         const state = ctx.query.state;
 
-        const args: string[] = [code, state];
-        if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
-            const redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
-            const params = { ...ctx.query };
-            delete params.code;
-            delete params.state;
-            const query = querystring.stringify(params);
-            redirectUri.searchParams.append('', query);
-            args.push(redirectUri.href);
-        }
-        try {
-            await performOauth.apply(performOauth, args);
-        } catch (error) {
-            console.error(error);
-            ctx.status = 500;
+        if (state !== process.env.BUMBLE_SLACK_STATE) {
+            ctx.status = 401;
+        } else {
+            let redirectUri: URL = null;
+            if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
+                redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
+                const params = { ...ctx.query };
+                delete params.code;
+                delete params.state;
+                const query = querystring.stringify(params);
+                redirectUri.searchParams.append('', query);
+            }
+            try {
+                if (redirectUri) {
+                    await performOauth(ctx, code, redirectUri.href);
+                } else {
+                    await performOauth(ctx, code);
+                }
+            } catch (error) {
+                console.error(error);
+                ctx.status = 500;
+            }
         }
         await next();
     }
@@ -58,23 +65,27 @@ namespace Slack {
         const authUri = new URL('oauth/authorize', rootUri);
         authUri.searchParams.append('client_id', process.env.BUMBLE_SLACK_CLIENT_ID);
         authUri.searchParams.append('scope', ['commands', 'channels:history', 'chat:write:bot', 'emoji:read', 'team:read'].join(','));
-        authUri.searchParams.append('state', 'bumble');
-        const redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
-        redirectUri.searchParams.append('', encodeURIComponent(querystring.stringify(undefined)));
-        authUri.searchParams.append('redirect_uri', redirectUri.href)
+        authUri.searchParams.append('state', process.env.BUMBLE_SLACK_STATE);
+        if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
+            const redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
+            redirectUri.searchParams.append('', encodeURIComponent(querystring.stringify(undefined)));
+            authUri.searchParams.append('redirect_uri', redirectUri.href);
+        }
         return authUri;
     }
 
-    async function performOauth(code: string, state: string, redirectUri?: string) {
+    async function performOauth(ctx: koa.Context, code: string, redirectUri?: string) {
         const opts: slack.WebApi.OauthAccessParameters = {
             client_id: process.env.BUMBLE_SLACK_CLIENT_ID,
             client_secret: process.env.BUMBLE_SLACK_CLIENT_SECRET,
-            code,
-            redirect_uri: redirectUri
+            code: code
         };
-
+        if (redirectUri) {
+            opts.redirect_uri = redirectUri;
+        }
         try {
             const auth = await WebApi.oauth.access(opts);
+
         } catch (error) {
             throw error;
         }
