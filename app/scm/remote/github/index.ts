@@ -15,6 +15,7 @@ namespace Github {
         const received = request.headers['x-hub-signature'].split('sha1=')[1];
         return crypto.timingSafeEqual(new Buffer(received, 'utf8'), new Buffer(expected, 'utf8'));
     }
+    
     export async function webhook(ctx: koa.Context, next: () => Promise<any>) {
         if (!isXHubSignatureValid(ctx.request)) {
             ctx.status = 401;

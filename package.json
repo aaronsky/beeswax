@@ -30,6 +30,7 @@
     "@types/koa-bodyparser": "^3.0.23",
     "@types/koa-router": "^7.0.22",
     "@types/lodash": "^4.14.63",
+    "@types/request": "^0.0.42",
     "@types/webpack": "^2.2.15",
     "ava": "^0.19.1",
     "babel-core": "^6.24.1",
@@ -44,7 +45,6 @@
     "webpack-node-externals": "^1.5.4"
   },
   "dependencies": {
-    "@slack/client": "^3.9.0",
     "dotenv": "^4.0.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
@@ -54,7 +54,8 @@
     "koa-static-cache": "^5.0.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "nodegit": "^0.18.3"
+    "nodegit": "^0.18.3",
+    "request": "^2.81.0"
   },
   "babel": {
     "plugins": [
