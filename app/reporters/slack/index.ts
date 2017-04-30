@@ -10,7 +10,7 @@ namespace Slack {
     export async function receiveEvents(ctx: koa.Context, next: () => Promise<any>) {
         const body = ctx.request.body as slack.EventsApi.BaseEvent;
         if (body.token !== process.env.BUMBLE_SLACK_VERIFICATION_TOKEN) {
-            ctx.status = 401;
+            ctx.status = 403;
         } else if (body.type === 'event_callback') {
             const event = body as slack.EventsApi.Event;
             EventsApi.handleEvent(event);
@@ -35,7 +35,7 @@ namespace Slack {
         const state = ctx.query.state;
 
         if (state !== process.env.BUMBLE_SLACK_STATE) {
-            ctx.status = 401;
+            ctx.status = 403;
         } else {
             let redirectUri: URL = null;
             if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
@@ -85,10 +85,27 @@ namespace Slack {
         }
         try {
             const auth = await WebApi.oauth.access(opts);
-
+            await performAuthTest(ctx, auth);
         } catch (error) {
             throw error;
         }
+    }
+
+    async function performAuthTest(ctx: koa.Context, auth: slack.WebApi.OauthAccessResponse) {
+        const scopes = auth.scope.split(/\,/);
+        const opts: slack.WebApi.AuthTestParameters = {
+            token: auth.access_token
+        };
+        try {
+            const identity = await WebApi.auth.test(opts);
+            await processSuccessfulAuth(ctx, auth, identity);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async function processSuccessfulAuth(ctx: koa.Context, auth: slack.WebApi.OauthAccessResponse, identity: slack.WebApi.AuthTestResponse) {
+        ctx.redirect('/');
     }
 }
 export default Slack;

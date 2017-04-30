@@ -1,4 +1,4 @@
-declare namespace Github {
+declare module github {
     export interface IRepository {
         id: number;
         name: string;

@@ -1,9 +1,7 @@
 import * as crypto from 'crypto';
 import * as koa from 'koa';
 import * as Router from 'koa-router';
-
-import SCM from '../..';
-import Git from '../../local';
+import Emitter from '../../../utilities/emitter';
 
 namespace Github {
     function isXHubSignatureValid(request: koa.Request): boolean {
@@ -18,14 +16,14 @@ namespace Github {
     
     export async function webhook(ctx: koa.Context, next: () => Promise<any>) {
         if (!isXHubSignatureValid(ctx.request)) {
-            ctx.status = 401;
+            ctx.status = 403;
         } else {
             ctx.status = 200;
             const eventType = ctx.request.headers['x-github-event'] as string;
             const raw = ctx.request.body;
-            const repository = new Git.Repository(raw['repository']);
-            const commits = raw.commits.map(rawCommit => new Git.Commit(rawCommit));
-            SCM.emit(eventType, repository, commits, raw);
+            const repository = raw['repository'] as github.IRepository;
+            const commits = raw.commits as github.ICommit[];
+            Emitter.emit(eventType, repository, commits, raw);
         }
         await next();
     }
