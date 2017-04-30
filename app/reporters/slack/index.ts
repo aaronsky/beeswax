@@ -43,8 +43,7 @@ namespace Slack {
                 const params = { ...ctx.query };
                 delete params.code;
                 delete params.state;
-                const query = querystring.stringify(params);
-                redirectUri.searchParams.append('', query);
+                redirectUri.search = encodeURIComponent(querystring.stringify(params));
             }
             try {
                 if (redirectUri) {
@@ -62,13 +61,13 @@ namespace Slack {
 
     function getAuthorizeUrl(): URL {
         const rootUri = new URL('https://slack.com');
-        const authUri = new URL('oauth/authorize', rootUri);
+        const authUri = new URL('/oauth/authorize', rootUri);
         authUri.searchParams.append('client_id', process.env.BUMBLE_SLACK_CLIENT_ID);
         authUri.searchParams.append('scope', ['commands', 'channels:history', 'chat:write:bot', 'emoji:read', 'team:read'].join(','));
         authUri.searchParams.append('state', process.env.BUMBLE_SLACK_STATE);
         if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
             const redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
-            redirectUri.searchParams.append('', encodeURIComponent(querystring.stringify(undefined)));
+            redirectUri.search = encodeURIComponent(querystring.stringify(undefined));
             authUri.searchParams.append('redirect_uri', redirectUri.href);
         }
         return authUri;

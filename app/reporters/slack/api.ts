@@ -3,14 +3,19 @@ import { URL } from 'url';
 import { slack } from "./slack";
 
 export namespace WebApi {
-    const rootUri = new URL('https://slack.com/');
-    const apiUri = new URL('api', rootUri);
+    const slackUri = new URL('https://slack.com/api');
     async function callApi<T extends slack.WebApi.Response>(method: string, opts: object): Promise<T> {
+        const targetUri = `${slackUri.href}/${method}`;
+        console.log('Sending',  method, 'request to', targetUri);
         return new Promise<T>((resolve, reject) => {
-            const callUri = new URL(method, apiUri);
-            request.post(callUri.href, (error, response, body) => {
-                if (error || response.statusCode !== 200) {
-                    reject(error);
+            request.post({ 
+                url: targetUri,
+                form: opts
+            }, (error, response, rawBody: string) => {
+                const body: T = JSON.parse(rawBody);
+                console.log('Received', body.ok ? 'an OK' : 'a NOT OK', 'response from', targetUri, 'and got a status code of', response.statusCode);
+                if (!body.ok) {
+                    reject(body);
                     return;
                 }
                 resolve(body);
