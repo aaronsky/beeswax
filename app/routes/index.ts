@@ -3,6 +3,7 @@ import * as compose from 'koa-compose';
 import * as Router from 'koa-router';
 import * as _ from 'lodash';
 
+import Site from './site';
 import SCM from '../scm';
 import Reporters from '../reporters';
 
@@ -19,7 +20,8 @@ export function combineRouters(routers: Router[]) {
 
 const routes = combineRouters([
     ...SCM.routers(),
-    ...Reporters.routers()
+    ...Reporters.routers(),
+    ...Site.routers()
 ]);
 
 export default routes;

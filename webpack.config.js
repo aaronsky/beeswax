@@ -1,16 +1,16 @@
-import * as path from 'path';
-
-import { CheckerPlugin } from 'awesome-typescript-loader';
-import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
-import webpack from 'webpack';
-import webpackMerge from 'webpack-merge';
-import nodeExternals from 'webpack-node-externals';
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
 
 const prod = process.env.NODE_ENV === 'production';
+console.log(`Compiling client code with production set to '${prod}'`);
 
 const appPath = path.resolve(__dirname, 'app');
 const publicPath = path.resolve(appPath, 'public');
+const publicScriptsPath = path.resolve(publicPath, 'scripts');
 const distPath = path.resolve(__dirname, 'dist');
+const publicScriptsDistPath = path.resolve(distPath, 'public', 'scripts');
 
 let scssLoader = null;
 let devtool = null;
@@ -22,11 +22,12 @@ if (prod) {
     devtool = 'source-map';
 }
 
-const base = {
+module.exports = {
+    target: 'web',
+    entry: path.resolve(publicScriptsPath, 'index.tsx'),
     output: {
-        path: distPath,
-        filename: '[name].bundle.js',
-        chunkFilename: '[chunkhash].bundle.js'
+        path: publicScriptsDistPath,
+        filename: 'client.bundle.js',
     },
     node: {
         __dirname: false,
@@ -45,7 +46,7 @@ const base = {
             loader: 'source-map-loader'
         }, {
             test: /\.(jpe?g|png|gif|svg)$/i,
-            loaders: ['file?context=src/images&name=images/[path][name].[ext]', 'image-webpack?optimizationLevel=2'],
+            loaders: ['file?context=public/images&name=images/[path][name].[ext]', 'image-webpack?optimizationLevel=2'],
             exclude: /node_modules/,
             include: publicPath,
         }, {
@@ -61,25 +62,3 @@ const base = {
     },
     devtool: devtool
 };
-
-const targets = [{
-    name: 'app',
-    target: 'node',
-    path: path.resolve(appPath, 'index.ts'),
-    externals: [nodeExternals()]
-}, {
-    name: 'client',
-    target: 'web',
-    path: path.resolve(publicPath, 'scripts', 'index.ts'),
-    externals: []
-}]
-
-const configs = targets.map(target => webpackMerge(base, {
-    target: target.target,
-    entry: {
-        [target.name]: target.path
-    },
-    externals: target.externals
-}));
-
-export default configs;

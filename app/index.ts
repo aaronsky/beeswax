@@ -14,7 +14,7 @@ const publicPath = path.resolve(__dirname, 'public');
 
 const app = new Koa();
 react(app, {
-    extname: 'tsx',
+    extname: 'js',
     views: viewsPath
 });
 

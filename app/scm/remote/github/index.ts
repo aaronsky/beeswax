@@ -13,6 +13,7 @@ class Github extends BumblePluginService  {
         this.router.post('/github/receive', this.webhook);
     }
     async webhook(ctx: koa.Context, next: () => Promise<any>) {
+        await next();
         if (!this.isXHubSignatureValid(ctx.request)) {
             ctx.status = 403;
         } else {
@@ -23,7 +24,6 @@ class Github extends BumblePluginService  {
             const commits = raw.commits as Commit[];
             Emitter.emit(eventType, repository, commits, raw);
         }
-        await next();
     }
     private isXHubSignatureValid(request: koa.Request): boolean {
         const expected = crypto.createHmac('sha1', process.env.BUMBLE_GH_SECRET)

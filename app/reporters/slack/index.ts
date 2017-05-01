@@ -17,6 +17,7 @@ class Slack extends BumblePluginService {
         this.router.get('/slack/oauth', this.receiveOauth.bind(this));
     }
     private async receiveEvents(ctx: koa.Context, next: () => Promise<any>) {
+        await next();
         const body = ctx.request.body as slack.EventsApi.BaseEvent;
         if (body.token !== process.env.BUMBLE_SLACK_VERIFICATION_TOKEN) {
             ctx.status = 403;
@@ -31,13 +32,14 @@ class Slack extends BumblePluginService {
             };
             ctx.status = 200;
         }
-        await next();
     }
     private async login(ctx: koa.Context, next: () => Promise<any>) {
-        ctx.redirect(this.getAuthorizeUrl().href);
         await next();
+        ctx.redirect(this.getAuthorizeUrl().href);
     }
     private async receiveOauth(ctx: koa.Context, next: () => Promise<any>) {
+        await next();
+        
         const code = ctx.query.code;
         const state = ctx.query.state;
 
@@ -63,7 +65,6 @@ class Slack extends BumblePluginService {
                 ctx.status = 500;
             }
         }
-        await next();
     }
     private getAuthorizeUrl(): URL {
         const rootUri = new URL('https://slack.com');

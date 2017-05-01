@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "es2015",
         "module": "commonjs",
         "moduleResolution": "node",
         "jsx": "react",
@@ -9,9 +9,14 @@
         "rootDir": "./app",
         "outDir": "./dist"
     },
+    "include": [
+        "app/**/*.ts",
+        "app/views/**/*.tsx"
+    ],
     "exclude": [
         ".github/",
         ".vscode/",
-        "node_modules/"
+        "node_modules/",
+        "app/public/**/*"
     ]
 }
