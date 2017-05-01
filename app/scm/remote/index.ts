@@ -1,7 +1,9 @@
-import Github, { router as githubRouter } from './github';
+import Github from './github';
+import { BumblePluginService } from '../../plugins/models';
 
-export function routes() {
-    return [
-        githubRouter
-    ];
+export const services: BumblePluginService[] = [
+    new Github()
+];
+export function routers() {
+    return services.map(service => service.router);
 }

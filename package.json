@@ -5,6 +5,7 @@
   "main": "dist/app.bundle.js",
   "private": true,
   "scripts": {
+    "clean": "rm -rf ./dist",
     "build": "webpack",
     "start": "node ./dist/app.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"

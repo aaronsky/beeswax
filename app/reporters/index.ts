@@ -1,11 +1,12 @@
-import Slack, { router as slackRouter } from './slack';
+import Slack from './slack';
+import { BumblePluginService } from '../plugins/models';
 
 namespace Reporters {
+    export const services: BumblePluginService[] = [
+        new Slack()
+    ];
     export function routers() {
-        return [
-            slackRouter
-        ];
+        return services.map(service => service.router);
     }
 }
-
 export default Reporters;

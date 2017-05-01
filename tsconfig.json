@@ -12,7 +12,6 @@
     "exclude": [
         ".github/",
         ".vscode/",
-        "node_modules/",
-        "app/public/"
+        "node_modules/"
     ]
 }
