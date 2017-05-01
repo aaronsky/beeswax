@@ -10,7 +10,7 @@ class Github extends BumblePluginService  {
         super();
     }
     setupRoutes() {
-        this.router.post('/github/receive', this.webhook);
+        this.router.post('/github/receive', this.webhook.bind(this));
     }
     async webhook(ctx: koa.Context, next: () => Promise<any>) {
         await next();
