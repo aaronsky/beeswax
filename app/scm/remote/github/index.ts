@@ -2,10 +2,10 @@ import * as crypto from 'crypto';
 import * as koa from 'koa';
 import * as Router from 'koa-router';
 import { Commit, Repository } from './models';
-import { BumblePluginService } from '../../../plugins/models';
+import { BeeswaxPluginService } from '../../../plugins/models';
 import Emitter from '../../../utilities/emitter';
 
-class Github extends BumblePluginService  {
+class Github extends BeeswaxPluginService  {
     constructor() {
         super();
     }

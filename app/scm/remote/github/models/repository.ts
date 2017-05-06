@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { Contributor } from './contributor';
-import { BumblePluginModel } from '../../../../plugins/models';
-import { Repository as BumbleRepository } from '../../../models';
+import { BeeswaxPluginModel } from '../../../../plugins/models';
+import { Repository as BeeswaxRepository } from '../../../models';
 
 export interface Repository {
     id: number;
@@ -22,12 +22,12 @@ export interface Repository {
     master_branch: string;
 }
 
-export class Repository extends BumblePluginModel<BumbleRepository> {
-    constructor(model?: BumbleRepository) {
+export class Repository extends BeeswaxPluginModel<BeeswaxRepository> {
+    constructor(model?: BeeswaxRepository) {
         super(model);
     }
     toModel() {
-        const beeswaxModel = new BumbleRepository();
+        const beeswaxModel = new BeeswaxRepository();
         return beeswaxModel;
     }
 }

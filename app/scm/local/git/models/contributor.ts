@@ -1,5 +1,5 @@
-import { BumblePluginModel } from '../../../../plugins/models';
-import { Contributor as BumbleContributor } from '../../../models';
+import { BeeswaxPluginModel } from '../../../../plugins/models';
+import { Contributor as BeeswaxContributor } from '../../../models';
 
 export interface Contributor {
     id: number;
@@ -11,12 +11,12 @@ export interface Contributor {
     type: string;
 }
 
-export class Contributor extends BumblePluginModel<BumbleContributor> {
-    constructor(model?: BumbleContributor) {
+export class Contributor extends BeeswaxPluginModel<BeeswaxContributor> {
+    constructor(model?: BeeswaxContributor) {
         super(model);
     }
     toModel() {
-        const beeswaxModel = new BumbleContributor();
+        const beeswaxModel = new BeeswaxContributor();
         return beeswaxModel;
     }
 }

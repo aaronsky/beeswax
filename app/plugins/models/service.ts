@@ -1,6 +1,6 @@
 import * as Router from 'koa-router';
 
-abstract class BumblePluginService {
+abstract class BeeswaxPluginService {
     router: Router;
     constructor() {
         this.router = new Router();
@@ -8,4 +8,4 @@ abstract class BumblePluginService {
     }
     protected abstract setupRoutes(): void;
 }
-export default BumblePluginService;
+export default BeeswaxPluginService;

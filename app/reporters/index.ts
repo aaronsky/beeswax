@@ -1,8 +1,8 @@
 import Slack from './slack';
-import { BumblePluginService } from '../plugins/models';
+import { BeeswaxPluginService } from '../plugins/models';
 
 namespace Reporters {
-    export const services: BumblePluginService[] = [
+    export const services: BeeswaxPluginService[] = [
         new Slack()
     ];
     export function routers() {

@@ -1,7 +1,7 @@
 import Github from './github';
-import { BumblePluginService } from '../../plugins/models';
+import { BeeswaxPluginService } from '../../plugins/models';
 
-export const services: BumblePluginService[] = [
+export const services: BeeswaxPluginService[] = [
     new Github()
 ];
 export function routers() {

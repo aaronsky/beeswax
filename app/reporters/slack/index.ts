@@ -4,10 +4,10 @@ import * as querystring from 'querystring';
 import { URL } from 'url';
 
 import { EventsApi, WebApi } from './api';
-import { BumblePluginService } from '../../plugins/models';
+import { BeeswaxPluginService } from '../../plugins/models';
 import { slack } from "./slack";
 
-class Slack extends BumblePluginService {
+class Slack extends BeeswaxPluginService {
     constructor() {
         super();
     }

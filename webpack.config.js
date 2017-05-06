@@ -2,6 +2,7 @@ const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const fs = require('fs');
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
@@ -18,14 +19,31 @@ const publicDistPath = path.resolve(distPath, 'public');
 const publicScriptsDistPath = path.resolve(publicDistPath, 'scripts');
 const viewsDistPath = path.resolve(distPath, 'views');
 
-let scssLoader = null;
+let scssLoader = 'style!css!postcss!sass';
 let devtool = null;
+const plugins = [
+    new CheckerPlugin()
+];
 if (prod) {
-    scssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader');
+    scssLoader = ExtractTextPlugin.extract(scssLoader);
     devtool = 'source-map';
+    plugins.push(new webpack.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false
+    }), new UglifyJSPlugin({
+        sourceMap: true,
+        beautify: false,
+        mangle: {
+            screw_ie8: true,
+            keep_fnames: true
+        },
+        compress: {
+            screw_ie8: true
+        },
+        comments: false
+    }));
 } else {
-    scssLoader = 'style!css!postcss!sass';
-    devtool = 'inline-source-map';
+    devtool = 'cheap-eval-source-map';
 }
 
 const base = {
@@ -35,14 +53,19 @@ const base = {
     },
     module: {
         rules: [{
-            test: /\.ts(x?)$/,
+            test: /\.tsx?$/,
             exclude: /node_modules/,
-            use: [
-                { loader: 'awesome-typescript-loader' }
+            loaders: [
+                'babel-loader',
+                'awesome-typescript-loader'
             ]
         }, {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }, {
             enforce: 'pre',
-            test: /\.(t|j)sx?$/,
+            test: /\.[jt]sx?$/,
             loader: 'source-map-loader'
         }, {
             test: /\.(jpe?g|png|gif|svg)$/i,
@@ -54,9 +77,7 @@ const base = {
             use: scssLoader
         }]
     },
-    plugins: [
-        new CheckerPlugin()
-    ],
+    plugins: plugins,
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css']
     },

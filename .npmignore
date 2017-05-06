@@ -1,0 +1,7 @@
+.vscode/
+app/
+node_modules/
+test/
+.env
+webpack.config.js
+tsconfig.json

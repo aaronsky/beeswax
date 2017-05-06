@@ -1,16 +1,17 @@
 {
   "name": "beeswax",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A modular task automation and reporting tool",
   "main": "dist/app.bundle.js",
-  "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "webpack --progress --colors",
+    "build:prod": "NODE_ENV=production webpack -p --progress --colors",
     "start": "npm run clean && npm run build && npm run start:dev",
     "start:dev": "nodemon ./dist/app.bundle.js",
     "start:prod": "node ./dist/app.bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build:prod"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "@types/webpack": "^2.2.15",
     "ava": "^0.19.1",
     "awesome-typescript-loader": "^3.1.3",
+    "babel-loader": "^7.0.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
@@ -46,6 +48,8 @@
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.16.1",
     "typescript": "^2.3.2",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.4.1",
     "webpack-merge": "^4.1.0",
     "webpack-node-externals": "^1.5.4"

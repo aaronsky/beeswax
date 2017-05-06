@@ -1,6 +1,6 @@
 import { Contributor } from './contributor';
-import { BumblePluginModel } from '../../../../plugins/models';
-import { Commit as BumbleCommit } from '../../../models';
+import { BeeswaxPluginModel } from '../../../../plugins/models';
+import { Commit as BeeswaxCommit } from '../../../models';
 
 export interface Commit {
     id: string;
@@ -16,12 +16,12 @@ export interface Commit {
     modifiedFiles: string[];
 }
 
-export class Commit extends BumblePluginModel<BumbleCommit> {
-    constructor(model?: BumbleCommit) {
+export class Commit extends BeeswaxPluginModel<BeeswaxCommit> {
+    constructor(model?: BeeswaxCommit) {
         super(model);
     }
     toModel() {
-        const beeswaxModel = new BumbleCommit();
+        const beeswaxModel = new BeeswaxCommit();
         return beeswaxModel;
     }
 }

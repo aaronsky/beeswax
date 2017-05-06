@@ -9,7 +9,7 @@ export default class IndexView extends React.Component<{}, {}> {
         const contentString = ReactDOMServer.renderToStaticMarkup(<App />);
         return (
             <BaseLayoutView
-                title='Bumble | Home'
+                title='Beeswax | Home'
                 description='Modular CI task automation and reporting'>
                 <div id='content' dangerouslySetInnerHTML={{ __html: contentString }} />
             </BaseLayoutView>
