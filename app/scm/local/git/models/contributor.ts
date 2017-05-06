@@ -16,7 +16,7 @@ export class Contributor extends BumblePluginModel<BumbleContributor> {
         super(model);
     }
     toModel() {
-        const bumbleModel = new BumbleContributor();
-        return bumbleModel;
+        const beeswaxModel = new BumbleContributor();
+        return beeswaxModel;
     }
 }

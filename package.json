@@ -1,5 +1,5 @@
 {
-  "name": "bumble",
+  "name": "beeswax",
   "version": "0.0.0",
   "description": "A modular task automation and reporting tool",
   "main": "dist/app.bundle.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aaronsky/bumble.git"
+    "url": "git+https://github.com/aaronsky/beeswax.git"
   },
   "keywords": [
     "ci",
@@ -25,9 +25,9 @@
   "author": "Aaron Sky <aaronsky@skyaaron.com> (http://skyaaron.com/)",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/aaronsky/bumble/issues"
+    "url": "https://github.com/aaronsky/beeswax/issues"
   },
-  "homepage": "https://github.com/aaronsky/bumble#readme",
+  "homepage": "https://github.com/aaronsky/beeswax#readme",
   "devDependencies": {
     "@types/koa": "^2.0.39",
     "@types/koa-bodyparser": "^3.0.23",

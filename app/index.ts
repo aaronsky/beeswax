@@ -22,6 +22,6 @@ app.use(bodyParser());
 app.use(routes);
 app.use(staticCache(publicPath));
 
-const server = app.listen(process.env.BUMBLE_PORT, process.env.BUMBLE_HOST, () => {
+const server = app.listen(process.env.BEESWAX_PORT, process.env.BEESWAX_HOST, () => {
     console.log('Server listening on %s:%s', server.address().address, server.address().port);
 });

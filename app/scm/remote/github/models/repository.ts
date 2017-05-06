@@ -27,7 +27,7 @@ export class Repository extends BumblePluginModel<BumbleRepository> {
         super(model);
     }
     toModel() {
-        const bumbleModel = new BumbleRepository();
-        return bumbleModel;
+        const beeswaxModel = new BumbleRepository();
+        return beeswaxModel;
     }
 }

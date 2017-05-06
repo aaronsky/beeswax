@@ -21,7 +21,7 @@ export class Commit extends BumblePluginModel<BumbleCommit> {
         super(model);
     }
     toModel() {
-        const bumbleModel = new BumbleCommit();
-        return bumbleModel;
+        const beeswaxModel = new BumbleCommit();
+        return beeswaxModel;
     }
 }

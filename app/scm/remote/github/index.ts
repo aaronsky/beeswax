@@ -26,7 +26,7 @@ class Github extends BumblePluginService  {
         }
     }
     private isXHubSignatureValid(request: koa.Request): boolean {
-        const expected = crypto.createHmac('sha1', process.env.BUMBLE_GH_SECRET)
+        const expected = crypto.createHmac('sha1', process.env.BEESWAX_GH_SECRET)
             .update(JSON.stringify(request.body), 'utf8')
             .digest('hex');
         const received = request.headers['x-hub-signature'].split('sha1=')[1];

@@ -19,7 +19,7 @@ class Slack extends BumblePluginService {
     private async receiveEvents(ctx: koa.Context, next: () => Promise<any>) {
         await next();
         const body = ctx.request.body as slack.EventsApi.BaseEvent;
-        if (body.token !== process.env.BUMBLE_SLACK_VERIFICATION_TOKEN) {
+        if (body.token !== process.env.BEESWAX_SLACK_VERIFICATION_TOKEN) {
             ctx.status = 403;
         } else if (body.type === 'event_callback') {
             const event = body as slack.EventsApi.Event;
@@ -43,12 +43,12 @@ class Slack extends BumblePluginService {
         const code = ctx.query.code;
         const state = ctx.query.state;
 
-        if (state !== process.env.BUMBLE_SLACK_STATE) {
+        if (state !== process.env.BEESWAX_SLACK_STATE) {
             ctx.status = 403;
         } else {
             let redirectUri: URL = null;
-            if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
-                redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
+            if (process.env.BEESWAX_SLACK_REDIRECT_URI) {
+                redirectUri = new URL(process.env.BEESWAX_SLACK_REDIRECT_URI);
                 const params = { ...ctx.query };
                 delete params.code;
                 delete params.state;
@@ -69,11 +69,11 @@ class Slack extends BumblePluginService {
     private getAuthorizeUrl(): URL {
         const rootUri = new URL('https://slack.com');
         const authUri = new URL('/oauth/authorize', rootUri);
-        authUri.searchParams.append('client_id', process.env.BUMBLE_SLACK_CLIENT_ID);
+        authUri.searchParams.append('client_id', process.env.BEESWAX_SLACK_CLIENT_ID);
         authUri.searchParams.append('scope', ['commands', 'channels:history', 'chat:write:bot', 'emoji:read', 'team:read'].join(','));
-        authUri.searchParams.append('state', process.env.BUMBLE_SLACK_STATE);
-        if (process.env.BUMBLE_SLACK_REDIRECT_URI) {
-            const redirectUri = new URL(process.env.BUMBLE_SLACK_REDIRECT_URI);
+        authUri.searchParams.append('state', process.env.BEESWAX_SLACK_STATE);
+        if (process.env.BEESWAX_SLACK_REDIRECT_URI) {
+            const redirectUri = new URL(process.env.BEESWAX_SLACK_REDIRECT_URI);
             redirectUri.search = encodeURIComponent(querystring.stringify(undefined));
             authUri.searchParams.append('redirect_uri', redirectUri.href);
         }
@@ -81,8 +81,8 @@ class Slack extends BumblePluginService {
     }
     private async performOauth(ctx: koa.Context, code: string, redirectUri?: string) {
         const opts: slack.WebApi.OauthAccessParameters = {
-            client_id: process.env.BUMBLE_SLACK_CLIENT_ID,
-            client_secret: process.env.BUMBLE_SLACK_CLIENT_SECRET,
+            client_id: process.env.BEESWAX_SLACK_CLIENT_ID,
+            client_secret: process.env.BEESWAX_SLACK_CLIENT_SECRET,
             code: code
         };
         if (redirectUri) {
