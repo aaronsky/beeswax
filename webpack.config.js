@@ -60,60 +60,57 @@ const base = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css']
     },
-    devtool: devtool,
-    watch: true
+    devtool: devtool
 };
 
-const targets = [{
-    name: 'app',
-    target: 'node',
-    entry: path.resolve(appPath, 'index.ts'),
-    output: {
-        path: distPath,
-        pattern: '[name].bundle.js'
+const targets = {
+    app: {
+        target: 'node',
+        entry: {
+            app: path.resolve(appPath, 'index.ts')
+        },
+        output: {
+            path: distPath,
+            filename: '[name].bundle.js'
+        },
+        externals: [nodeExternals()]
     },
-    externals: [nodeExternals()]
-}, {
-    name: 'client',
-    target: 'web',
-    entry: path.resolve(publicScriptsPath, 'index.tsx'),
-    output: {
-        path: publicScriptsDistPath,
-        pattern: '[name].bundle.js'
-    },
-    externals: []
-}];
+    client: {
+        target: 'web',
+        entry: {
+            client: path.resolve(publicScriptsPath, 'index.tsx')
+        },
+        output: {
+            path: publicScriptsDistPath,
+            filename: '[name].bundle.js'
+        },
+        externals: []
+    }
+};
 
 const fileNames = fs.readdirSync(viewsPath);
 fileNames.forEach(filename => {
     const filePath = path.resolve(viewsPath, filename);
     const fileBasename = path.basename(filePath, path.extname(filePath))
     console.log('Preparing target configuration for', filePath);
-    targets.push({
-        name: fileBasename,
+    targets[fileBasename] = {
         target: 'node',
-        entry: filePath,
+        entry: {
+            [fileBasename]: filePath
+        },
         output: {
             path: viewsDistPath,
-            pattern: '[name]-view.js',
-            library: fileBasename, 
+            filename: '[name]-view.js',
+            library: fileBasename,
+            libraryTarget: 'commonjs-module'
         },
         externals: [nodeExternals()]
-    });
+    };
 });
 
-const configs = targets.map(target => webpackMerge(base, {
-    target: target.target,
-    entry: {
-        [target.name]: target.entry
-    },
-    output: {
-        path: target.output.path,
-        filename: target.output.pattern,
-        library: target.output.library || '',
-            libraryTarget: 'commonjs-module'
-    },
-    externals: target.externals
-}));
+const configs = Object.keys(targets).map(name => {
+    const target = targets[name];
+    return webpackMerge(base, target)
+});
 
 module.exports = configs;
