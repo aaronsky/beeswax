@@ -2,14 +2,12 @@
   "name": "bumble",
   "version": "0.0.0",
   "description": "A modular task automation and reporting tool",
-  "main": "dist/index.js",
+  "main": "dist/app.bundle.js",
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run build:server && npm run build:client",
-    "build:server": "tsc",
-    "build:client": "webpack",
-    "start": "node ./dist",
+    "build": "webpack",
+    "start": "node ./dist/app.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -46,6 +44,7 @@
     "style-loader": "^0.16.1",
     "typescript": "^2.3.2",
     "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5",
     "webpack-merge": "^4.1.0",
     "webpack-node-externals": "^1.5.4"
   },

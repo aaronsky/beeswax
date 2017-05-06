@@ -9,7 +9,7 @@ namespace Site {
     router.get('/', async (ctx: RenderContext, next) => {
         await next();
         ctx.status = 200;
-        ctx.render('index');
+        ctx.render('index-view');
     });
 
     export function routers() {

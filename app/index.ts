@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import * as Koa from 'koa';
+import * as koa from 'koa';
 import * as bodyParser from 'koa-bodyparser';
 import * as react from 'koa-react-view';
 import * as staticCache from 'koa-static-cache';
@@ -12,7 +12,7 @@ import routes from './routes';
 const viewsPath = path.resolve(__dirname, 'views');
 const publicPath = path.resolve(__dirname, 'public');
 
-const app = new Koa();
+const app = new koa();
 react(app, {
     extname: 'js',
     views: viewsPath
