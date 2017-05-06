@@ -1,6 +1,6 @@
 {
   "name": "beeswax",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "A modular task automation and reporting tool",
   "main": "dist/app.bundle.js",
   "scripts": {
