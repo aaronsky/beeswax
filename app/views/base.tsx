@@ -15,6 +15,7 @@ export class BaseLayoutView extends React.Component<BaseLayoutProps, {}> {
                     <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
                     <meta name='description' content={this.props.description} />
                     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' />
+                    <link rel='icon' type='image/png' href='/img/favicon.png' />
                 </head>
                 <body>
                     {this.props.children}

@@ -1,4 +1,5 @@
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const fs = require('fs');
 const path = require('path');
@@ -12,17 +13,23 @@ console.log(`Compiling client code with production set to '${prod}'`);
 
 const appPath = path.resolve(__dirname, 'app');
 const publicPath = path.resolve(appPath, 'public');
+const publicImgPath = path.resolve(publicPath, 'img');
 const publicScriptsPath = path.resolve(publicPath, 'scripts');
 const viewsPath = path.resolve(appPath, 'views');
 const distPath = path.resolve(__dirname, 'dist');
 const publicDistPath = path.resolve(distPath, 'public');
+const publicImgDistPath = path.resolve(publicDistPath, 'img');
 const publicScriptsDistPath = path.resolve(publicDistPath, 'scripts');
 const viewsDistPath = path.resolve(distPath, 'views');
 
 let scssLoader = 'style!css!postcss!sass';
 let devtool = null;
 const plugins = [
-    new CheckerPlugin()
+    new CheckerPlugin(),
+    new CopyWebpackPlugin([{
+        from: publicImgPath,
+        to: publicImgDistPath
+    }])
 ];
 if (prod) {
     scssLoader = ExtractTextPlugin.extract(scssLoader);
@@ -47,6 +54,9 @@ if (prod) {
 }
 
 const base = {
+    output: {
+        filename: '[name].bundle.js'
+    },
     node: {
         __dirname: false,
         __filename: false
@@ -69,7 +79,20 @@ const base = {
             loader: 'source-map-loader'
         }, {
             test: /\.(jpe?g|png|gif|svg)$/i,
-            loaders: ['file?context=public/images&name=images/[path][name].[ext]', 'image-webpack?optimizationLevel=2'],
+            loaders: [{
+                loader: 'file-loader',
+                query: {
+                    name: '[name].[ext]',
+                    outputPath: '../public/img/'
+                }
+            }, {
+                loader: 'image-webpack-loader',
+                query: {
+                    optipng: {
+                        optimizationLevel: 2
+                    }
+                }
+            }],
             exclude: /node_modules/,
             include: publicPath,
         }, {
@@ -91,8 +114,7 @@ const targets = {
             app: path.resolve(appPath, 'index.ts')
         },
         output: {
-            path: distPath,
-            filename: '[name].bundle.js'
+            path: distPath
         },
         externals: [nodeExternals()]
     },
@@ -102,8 +124,7 @@ const targets = {
             client: path.resolve(publicScriptsPath, 'index.tsx')
         },
         output: {
-            path: publicScriptsDistPath,
-            filename: '[name].bundle.js'
+            path: publicScriptsDistPath
         },
         externals: []
     }
@@ -131,7 +152,7 @@ fileNames.forEach(filename => {
 
 const configs = Object.keys(targets).map(name => {
     const target = targets[name];
-    return webpackMerge(base, target)
+    return webpackMerge(base, target);
 });
 
 module.exports = configs;

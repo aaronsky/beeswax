@@ -25,3 +25,6 @@ app.use(staticCache(publicPath));
 const server = app.listen(process.env.BEESWAX_PORT, process.env.BEESWAX_HOST, () => {
     console.log('Server listening on %s:%s', server.address().address, server.address().port);
 });
+server.on('close', () => {
+    console.log('Shutting down server...');
+});
