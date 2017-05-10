@@ -2,14 +2,12 @@ import * as crypto from 'crypto';
 import * as koa from 'koa';
 import * as Router from 'koa-router';
 import { Commit, Repository } from './models';
-import { BeeswaxPluginService } from '../../../plugins/models';
-import Emitter from '../../../utilities/emitter';
+import PluginService from '../service';
+import Emitter from '../../core/utilities/emitter';
 
-class Github extends BeeswaxPluginService  {
+export default class Github extends PluginService  {
     constructor() {
         super();
-    }
-    setupRoutes() {
         this.router.post('/github/receive', this.webhook.bind(this));
     }
     async webhook(ctx: koa.Context, next: () => Promise<any>) {
@@ -33,5 +31,3 @@ class Github extends BeeswaxPluginService  {
         return crypto.timingSafeEqual(new Buffer(received, 'utf8'), new Buffer(expected, 'utf8'));
     }
 }
-
-export default Github;

@@ -4,8 +4,7 @@ import * as Router from 'koa-router';
 import * as _ from 'lodash';
 
 import Site from './site';
-import SCM from '../scm';
-import Reporters from '../reporters';
+import Plugins from '../../plugins';
 
 export function combineRouters(routers: Router[]) {
     const middleware = _.flatMap(routers, router => {
@@ -19,8 +18,7 @@ export function combineRouters(routers: Router[]) {
 }
 
 const routes = combineRouters([
-    ...SCM.routers(),
-    ...Reporters.routers(),
+    ...Plugins.routers(),
     ...Site.routers()
 ]);
 

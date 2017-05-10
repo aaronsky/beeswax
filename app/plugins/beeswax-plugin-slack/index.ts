@@ -4,14 +4,12 @@ import * as querystring from 'querystring';
 import { URL } from 'url';
 
 import { EventsApi, WebApi } from './api';
-import { BeeswaxPluginService } from '../../plugins/models';
+import PluginService from '../service';
 import { slack } from "./slack";
 
-class Slack extends BeeswaxPluginService {
+export default class Slack extends PluginService {
     constructor() {
         super();
-    }
-    setupRoutes() {
         this.router.post('/slack/receive', this.receiveEvents.bind(this));
         this.router.get('/slack/login', this.login.bind(this));
         this.router.get('/slack/oauth', this.receiveOauth.bind(this));
@@ -111,4 +109,3 @@ class Slack extends BeeswaxPluginService {
         ctx.redirect('/');
     }
 }
-export default Slack;

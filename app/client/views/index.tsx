@@ -4,7 +4,7 @@ import * as ReactDOMServer from 'react-dom/server';
 import { App } from '../public/scripts/app';
 import { BaseLayoutView } from './base';
 
-export default class IndexView extends React.Component<{}, {}> {
+export default class IndexView extends React.Component<object, object> {
     render() {
         const contentString = ReactDOMServer.renderToStaticMarkup(<App />);
         return (

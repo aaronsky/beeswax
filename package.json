@@ -8,10 +8,9 @@
     "build": "webpack --progress --colors",
     "build:prod": "NODE_ENV=production webpack -p --progress --colors",
     "start": "npm run clean && npm run build && npm run start:dev",
-    "start:dev": "nodemon ./dist/app.bundle.js",
+    "start:dev": "nodemon",
     "start:prod": "node ./dist/app.bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "npm run build:prod"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -50,6 +49,7 @@
     "sass-loader": "^6.0.3",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.16.1",
+    "ts-node": "^3.0.4",
     "typescript": "^2.3.2",
     "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony",
     "uglifyjs-webpack-plugin": "^0.4.3",
@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "dotenv": "^4.0.0",
+    "glob": "^7.1.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-compose": "^4.0.0",
