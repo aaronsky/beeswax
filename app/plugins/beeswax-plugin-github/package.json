@@ -1,0 +1,34 @@
+{
+    "name": "beeswax-plugin-github",
+    "version": "0.0.1",
+    "description": "A modular task automation and reporting tool",
+    "main": "index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aaronsky/beeswax.git"
+    },
+    "keywords": [
+        "ci",
+        "continuous",
+        "integration",
+        "jenkins"
+    ],
+    "author": "Aaron Sky <aaronsky@skyaaron.com> (http://skyaaron.com/)",
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/aaronsky/beeswax/issues"
+    },
+    "homepage": "https://github.com/aaronsky/beeswax#readme",
+    "devDependencies": {
+        "@types/koa": "^2.0.39",
+        "@types/koa-router": "^7.0.22",
+        "typescript": "^2.3.2"
+    },
+    "dependencies": {
+        "koa": "^2.2.0",
+        "koa-router": "^7.1.1"
+    }
+}
