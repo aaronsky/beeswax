@@ -5,22 +5,17 @@ const fs = require('fs');
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
-const webpackMerge = require('webpack-merge');
-const nodeExternals = require('webpack-node-externals');
 
 const prod = process.env.NODE_ENV === 'production';
 console.log(`Compiling client code with production set to '${prod}'`);
 
-const appPath = path.resolve(__dirname, 'app');
-const publicPath = path.resolve(appPath, 'public');
+const publicPath = path.resolve(__dirname, 'app', 'client', 'public');
 const publicImgPath = path.resolve(publicPath, 'img');
 const publicScriptsPath = path.resolve(publicPath, 'scripts');
-const viewsPath = path.resolve(appPath, 'views');
-const distPath = path.resolve(__dirname, 'dist');
-const publicDistPath = path.resolve(distPath, 'public');
+
+const publicDistPath = path.resolve(__dirname, 'dist', 'client', 'public');
 const publicImgDistPath = path.resolve(publicDistPath, 'img');
 const publicScriptsDistPath = path.resolve(publicDistPath, 'scripts');
-const viewsDistPath = path.resolve(distPath, 'views');
 
 let scssLoader = 'style!css!postcss!sass';
 let devtool = null;
@@ -53,14 +48,20 @@ if (prod) {
     devtool = 'cheap-eval-source-map';
 }
 
-const base = {
+module.exports = {
+    target: 'web',
+    entry: {
+        client: path.resolve(publicScriptsPath, 'index.tsx')
+    },
     output: {
-        filename: '[name].bundle.js'
+        filename: '[name].bundle.js',
+        path: publicScriptsDistPath
     },
     node: {
         __dirname: false,
         __filename: false
     },
+    externals: [],
     module: {
         rules: [{
             test: /\.tsx?$/,
@@ -102,57 +103,7 @@ const base = {
     },
     plugins: plugins,
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css']
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.scss']
     },
     devtool: devtool
 };
-
-const targets = {
-    app: {
-        target: 'node',
-        entry: {
-            app: path.resolve(appPath, 'index.ts')
-        },
-        output: {
-            path: distPath
-        },
-        externals: [nodeExternals()]
-    },
-    client: {
-        target: 'web',
-        entry: {
-            client: path.resolve(publicScriptsPath, 'index.tsx')
-        },
-        output: {
-            path: publicScriptsDistPath
-        },
-        externals: []
-    }
-};
-
-const fileNames = fs.readdirSync(viewsPath);
-fileNames.forEach(filename => {
-    const filePath = path.resolve(viewsPath, filename);
-    const fileBasename = path.basename(filePath, path.extname(filePath))
-    console.log('Preparing target configuration for', filePath);
-    targets[fileBasename] = {
-        target: 'node',
-        entry: {
-            [fileBasename]: filePath
-        },
-        output: {
-            path: viewsDistPath,
-            filename: '[name]-view.js',
-            library: fileBasename,
-            libraryTarget: 'commonjs-module'
-        },
-        externals: [nodeExternals()]
-    };
-});
-
-const configs = Object.keys(targets).map(name => {
-    const target = targets[name];
-    return webpackMerge(base, target);
-});
-
-module.exports = configs;

@@ -1,6 +1,5 @@
 import * as koa from 'koa';
 import * as bodyParser from 'koa-bodyparser';
-import * as react from 'koa-react-view';
 import * as staticCache from 'koa-static-cache';
 import * as path from 'path';
 

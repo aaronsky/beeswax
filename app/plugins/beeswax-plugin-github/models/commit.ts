@@ -1,6 +1,6 @@
 import { Contributor } from './contributor';
-import { BeeswaxPluginModel } from '../../../../plugins/models';
-import { Commit as BeeswaxCommit } from '../../../models';
+import PluginModel from '../../model';
+import { Commit as BeeswaxCommit } from '../../../core/models';
 
 export interface Commit {
     id: string;
@@ -16,7 +16,7 @@ export interface Commit {
     modified: string[];
 }
 
-export class Commit extends BeeswaxPluginModel<BeeswaxCommit> {
+export class Commit extends PluginModel<BeeswaxCommit> {
     constructor(model?: BeeswaxCommit) {
         super(model);
     }

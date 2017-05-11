@@ -11,12 +11,11 @@
     },
     "include": [
         "app/**/*.ts",
-        "app/views/**/*.tsx"
+        "app/**/*.tsx"
     ],
     "exclude": [
         ".github/",
         ".vscode/",
-        "node_modules/",
-        "app/public/**/*"
+        "node_modules/"
     ]
 }

@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { Contributor } from './contributor';
-import { BeeswaxPluginModel } from '../../../../plugins/models';
-import { Repository as BeeswaxRepository } from '../../../models';
+import PluginModel from '../../model';
+import { Repository as BeeswaxRepository } from '../../../core/models';
 
 export interface Repository {
     id: number;
@@ -22,7 +22,7 @@ export interface Repository {
     master_branch: string;
 }
 
-export class Repository extends BeeswaxPluginModel<BeeswaxRepository> {
+export class Repository extends PluginModel<BeeswaxRepository> {
     constructor(model?: BeeswaxRepository) {
         super(model);
     }

@@ -22,15 +22,7 @@
         "url": "https://github.com/aaronsky/beeswax/issues"
     },
     "homepage": "https://github.com/aaronsky/beeswax#readme",
-    "devDependencies": {
-        "@types/koa": "^2.0.39",
-        "@types/koa-router": "^7.0.22",
-        "@types/request": "^0.0.42",
-        "typescript": "^2.3.2"
-    },
     "dependencies": {
-        "koa": "^2.2.0",
-        "koa-router": "^7.1.1",
         "request": "^2.81.0"
     }
 }

@@ -1,5 +1,5 @@
-import { BeeswaxPluginModel } from '../../../../plugins/models';
-import { Contributor as BeeswaxContributor } from '../../../models';
+import PluginModel from '../../model';
+import { Contributor as BeeswaxContributor } from '../../../core/models';
 
 export interface Contributor {
     id?: number;
@@ -12,7 +12,7 @@ export interface Contributor {
     type?: string;
 }
 
-export class Contributor extends BeeswaxPluginModel<BeeswaxContributor> {
+export class Contributor extends PluginModel<BeeswaxContributor> {
     constructor(model?: BeeswaxContributor) {
         super(model);
     }
