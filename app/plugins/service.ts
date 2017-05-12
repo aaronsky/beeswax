@@ -1,9 +1,6 @@
 import * as Router from 'koa-router';
 
 abstract class PluginService {
-    router: Router;
-    constructor() {
-        this.router = new Router();
-    }
+    abstract router(app, handle?: (req, res) => Promise<any>): Router;
 }
 export default PluginService;

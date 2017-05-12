@@ -21,8 +21,8 @@ namespace Plugins {
             return new cls();
         });
     }
-    export function routers(): Router[] {
-        return plugins.map(plugin => plugin.router);
+    export function routers(app, handle: (req, res) => Promise<any>): Router[] {
+        return plugins.map(plugin => plugin.router(app, handle));
     }
 }
 export default Plugins;

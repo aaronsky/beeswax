@@ -7,19 +7,13 @@ import Site from './site';
 import Plugins from '../../plugins';
 
 export function combineRouters(routers: Router[]) {
-    const middleware = _.flatMap(routers, router => {
-        return [
-            router.routes(),
-            router.allowedMethods()
-        ];
-    });
-
+    const middleware = _.flatMap(routers, router => [router.routes(), router.allowedMethods()]);
     return compose(middleware);
 }
 
-const routes = combineRouters([
-    ...Plugins.routers(),
-    ...Site.routers()
-]);
-
-export default routes;
+export default function routes(app, handle) {
+    return combineRouters([
+        ...Site.routers(app, handle),
+        ...Plugins.routers(app, handle)
+    ]);
+};

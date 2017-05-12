@@ -1,23 +1,36 @@
+import { IncomingMessage, ServerResponse } from 'http';
 import * as koa from 'koa';
 import * as Router from 'koa-router';
+import { parse, Url } from 'url';
 
-import Views from '../../client';
+interface NextRoute {
+    match: (pathname: string) => object;
+    fn: Function;
+}
 
 namespace Site {
-    const router = new Router();
-    
-    router.get('/', async (ctx, next) => {
-        await next();
-        try {
-            ctx.body = Views.toMarkup('index');
-            ctx.status = 200;
-        } catch (error) {
-            ctx.body = Views.toMarkup('error');
-            ctx.status = 404;
-        }
-    });
+    export function routers(app, handle: (req: IncomingMessage, res: ServerResponse, parsedUrl?: Url) => Promise<any>) {
+        const router = new Router();
+        router.get('*', async (ctx, next) => {
+            const parsed = parse(ctx.req.url, true);
+            const pathComps = parsed.pathname.split('/').filter(str => str);
 
-    export function routers() {
+            const routes = app.router.routes.get(ctx.method) as Set<NextRoute>;
+            let found = false;
+            routes.forEach(route => {
+                if (found) {
+                    return;
+                }
+                found = !!route.match(parsed.pathname);
+            });
+            if (found && pathComps[0] !== 'plugins') {
+                await handle(ctx.req, ctx.res, parsed);
+                ctx.respond = false;
+            } else {
+                await next();
+            }
+
+        });
         return [router];
     }
 }

@@ -8,11 +8,11 @@ import PluginService from '../service';
 import { slack } from "./slack";
 
 export default class Slack extends PluginService {
-    constructor() {
-        super();
-        this.router.post('/slack/receive', this.receiveEvents.bind(this));
-        this.router.get('/slack/login', this.login.bind(this));
-        this.router.get('/slack/oauth', this.receiveOauth.bind(this));
+    router(app): Router {
+        return new Router()
+            .post('/plugins/slack/receive', this.receiveEvents.bind(this))
+            .get('/plugins/slack/login', this.login.bind(this))
+            .get('/plugins/slack/oauth', this.receiveOauth.bind(this));
     }
     private async receiveEvents(ctx: koa.Context, next: () => Promise<any>) {
         await next();
@@ -37,7 +37,7 @@ export default class Slack extends PluginService {
     }
     private async receiveOauth(ctx: koa.Context, next: () => Promise<any>) {
         await next();
-        
+
         const code = ctx.query.code;
         const state = ctx.query.state;
 

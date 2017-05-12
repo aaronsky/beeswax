@@ -5,10 +5,10 @@ import { Commit, Repository } from './models';
 import PluginService from '../service';
 import Emitter from '../../core/utilities/emitter';
 
-export default class Github extends PluginService  {
-    constructor() {
-        super();
-        this.router.post('/github/receive', this.webhook.bind(this));
+export default class Github extends PluginService {
+    router(app): Router {
+        return new Router()
+            .post('/plugins/github/receive', this.webhook.bind(this));
     }
     async webhook(ctx: koa.Context, next: () => Promise<any>) {
         await next();

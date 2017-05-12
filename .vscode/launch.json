@@ -9,12 +9,11 @@
             "request": "launch",
             "name": "Launch",
             "protocol": "inspector",
-            "program": "${workspaceRoot}/dist/app.bundle.js",
+            "program": "${workspaceRoot}/dist/index.js",
             "runtimeArgs": [
                 "--inspect"
             ],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "build dev",
             "stopOnEntry": false,
             "sourceMaps": true
         },

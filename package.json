@@ -2,11 +2,13 @@
   "name": "beeswax",
   "version": "0.0.1",
   "description": "A modular task automation and reporting tool",
-  "main": "dist/app.bundle.js",
+  "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "concurrently \"tsc -w\" \"webpack --progress --colors\"",
-    "build:prod": "concurrently \"tsc\" \"NODE_ENV=production webpack -p --progress --colors\"",
+    "build": "npm run build:ts && npm run build:static && npm run build:next",
+    "build:ts": "tsc",
+    "build:next": "next build ./dist/client",
+    "build:static": "mkdir -p ./dist/client/static && cp -ap ./app/client/static/. ./dist/client/static",
     "dev": "nodemon",
     "start": "NODE_ENV=production node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -64,6 +66,7 @@
     "koa-static-cache": "^5.0.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "next": "^2.3.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   }

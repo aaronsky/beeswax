@@ -1,7 +1,10 @@
 import * as dotenv from 'dotenv';
 
-import start from './server';
+import createServer from './server';
 
 dotenv.config();
 
+async function start() {
+    const server = await createServer();
+}
 start();
