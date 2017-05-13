@@ -3,7 +3,7 @@
         "target": "es2015",
         "module": "commonjs",
         "moduleResolution": "node",
-        "jsx": "preserve",
+        "jsx": "react",
         "sourceMap": true,
         "pretty": true,
         "rootDir": "./app",
