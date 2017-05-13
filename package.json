@@ -4,12 +4,25 @@
   "description": "A modular task automation and reporting tool",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rm -rf ./dist",
-    "build": "npm run build:ts && npm run build:static && npm run build:next",
-    "build:ts": "tsc",
-    "build:next": "next build ./dist/client",
-    "build:static": "mkdir -p ./dist/client/static && cp -ap ./app/client/static/. ./dist/client/static",
-    "dev": "nodemon",
+    "clean": "n-clean dist",
+    "postclean": "n-run \"echo Done cleaning\"",
+
+    "build": "npm run ts:build && n-run \"npm run static:build\" \"npm run style:build\" && npm run next:build",
+    "postbuild": "n-run \"echo Build succeeded\"",
+    
+    "prewatch": "npm run build",
+    "watch": "nodemon",
+
+    "ts:build": "tsc",
+    "ts:watch": "tsc -w",
+
+    "next:build": "next build ./dist/client",
+
+    "style:build": "node-sass --include-path app/client/scss app/client/scss/main.scss dist/client/static/css/main.css",
+    "style:watch": "node-sass -w --include-path app/client/scss app/client/scss/main.scss dist/client/static/css/main.css",
+    
+    "static:build": "imagemin app/client/img/* -o=dist/client/static/img",
+    
     "start": "NODE_ENV=production node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -37,8 +50,10 @@
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
     "ava": "^0.19.1",
+    "imagemin-cli": "^3.0.0",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
+    "npm-build-tools": "^2.2.5",
     "typescript": "^2.3.2"
   },
   "dependencies": {
