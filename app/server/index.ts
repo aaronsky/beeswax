@@ -9,7 +9,7 @@ import routes from './routes';
 const clientPath = path.resolve(__dirname, '..', 'client');
 const staticPath = path.resolve(clientPath, 'static');
 
-const dev = process.env.NODE_ENV === 'production';
+const dev = process.env.NODE_ENV !== 'production';
 const app = next({
     dev,
     dir: clientPath
@@ -29,7 +29,7 @@ export default async function () {
         .use(routes(app, handle))
         .listen(process.env.BEESWAX_PORT, process.env.BEESWAX_HOST, () => {
             const address = server.address();
-            console.log('Server listening on %s:%s', address.address, address.port);
+            console.info('Server listening on %s:%s', address.address, address.port);
         });
     return server;
 }
