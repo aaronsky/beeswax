@@ -6,23 +6,14 @@
   "scripts": {
     "clean": "n-clean dist",
     "postclean": "n-run \"echo Done cleaning\"",
-
-    "build": "npm run ts:build && n-run \"npm run static:build\" \"npm run style:build\" && npm run next:build",
+    "build": "npm run build:ts && n-run \"npm run build:static\" \"npm run build:style\" && npm run build:next",
     "postbuild": "n-run \"echo Build succeeded\"",
-    
-    "prewatch": "npm run build",
-    "watch": "nodemon",
-
-    "ts:build": "tsc",
-    "ts:watch": "tsc -w",
-
-    "next:build": "next build ./dist/client",
-
-    "style:build": "node-sass --include-path app/client/scss app/client/scss/main.scss dist/client/static/css/main.css",
-    "style:watch": "node-sass -w --include-path app/client/scss app/client/scss/main.scss dist/client/static/css/main.css",
-    
-    "static:build": "imagemin app/client/img/* -o=dist/client/static/img",
-    
+    "prebuild:ts": "echo \"Linting step???\"",
+    "build:ts": "tsc",
+    "prebuild:style": "node-sass --include-path app/client/scss app/client/scss/main.scss dist/client/static/css/styles.css",
+    "build:style": "postcss --use autoprefixer -b 'last 2 versions' < dist/client/static/css/styles.css | postcss --use cssnano > dist/client/static/css/styles.min.css",
+    "build:static": "imagemin app/client/img/* -o=dist/client/static/img",
+    "build:next": "next build ./dist/client",
     "start": "NODE_ENV=production node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -49,11 +40,15 @@
     "@types/lodash": "^4.14.63",
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
+    "autoprefixer": "^7.1.0",
     "ava": "^0.19.1",
+    "cssnano": "^3.10.0",
     "imagemin-cli": "^3.0.0",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "npm-build-tools": "^2.2.5",
+    "postcss": "^6.0.1",
+    "postcss-cli": "^4.0.0",
     "typescript": "^2.3.2"
   },
   "dependencies": {
@@ -66,6 +61,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "next": "^2.3.1",
+    "nprogress": "^0.2.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   }
