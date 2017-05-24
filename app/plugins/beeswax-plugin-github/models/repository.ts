@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import { URL } from 'url';
+
 import { Contributor } from './contributor';
 import PluginModel from '../../model';
 import { Repository as BeeswaxRepository } from '../../../core/models';
@@ -27,7 +29,20 @@ export class Repository extends PluginModel<BeeswaxRepository> {
         super(model);
     }
     toModel() {
-        const beeswaxModel = new BeeswaxRepository();
-        return beeswaxModel;
+        const model = new BeeswaxRepository();
+        model.id = this.id;
+        model.name = this.name;
+        model.fullName = this.full_name;
+        model.owner = this.owner.toModel();
+        model.private = this.private;
+        model.url = new URL(this.html_url);
+        model.description = this.description;
+        model.created = moment(this.created_at);
+        model.updated = moment(this.updated_at);
+        model.lastPushed = moment(this.pushed_at);
+        model.gitUrl = new URL(this.git_url);
+        model.size = this.size;
+        model.defaultBranch = this.default_branch;
+        return model;
     }
 }

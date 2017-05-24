@@ -1,3 +1,6 @@
+import * as moment from 'moment';
+import { URL } from 'url';
+
 import PluginModel from '../../model';
 import { Contributor as BeeswaxContributor } from '../../../core/models';
 
@@ -17,7 +20,15 @@ export class Contributor extends PluginModel<BeeswaxContributor> {
         super(model);
     }
     toModel() {
-        const beeswaxModel = new BeeswaxContributor();
-        return beeswaxModel;
+        const model = new BeeswaxContributor();
+        model.id = this.id;
+        model.name = this.name;
+        model.email = this.email;
+        model.username = this.username;
+        model.date = moment(this.date);
+        model.url = new URL(this.html_url);
+        model.avatarUrl = new URL(this.avatar_url);
+        model.role = this.type;
+        return model;
     }
 }

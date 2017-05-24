@@ -1,3 +1,6 @@
+import * as moment from 'moment';
+import { URL } from 'url';
+
 import { Contributor } from './contributor';
 import PluginModel from '../../model';
 import { Commit as BeeswaxCommit } from '../../../core/models';
@@ -21,7 +24,16 @@ export class Commit extends PluginModel<BeeswaxCommit> {
         super(model);
     }
     toModel() {
-        const beeswaxModel = new BeeswaxCommit();
-        return beeswaxModel;
+        const model = new BeeswaxCommit();
+        model.id = this.id;
+        model.treeId = this.tree_id;
+        model.message = this.message;
+        model.timestamp = moment(this.timestamp);
+        model.url = new URL(this.url);
+        model.author = this.author.toModel();
+        model.added = this.added;
+        model.removed = this.removed;
+        model.modified = this.modified;
+        return model;
     }
 }
