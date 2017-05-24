@@ -1,6 +1,5 @@
 import * as request from 'request';
 import { URL } from 'url';
-import { slack } from './slack';
 
 export namespace WebApi {
     const slackUri = new URL('https://slack.com/api');

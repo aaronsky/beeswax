@@ -1,5 +1,3 @@
-import { ReadStream } from 'fs';
-
 declare module slack {
     export interface Bot {
         id: string;
@@ -644,7 +642,8 @@ declare module slack {
             paging: Paging;
         }
         export interface FilesUploadParameters extends ParametersAuthRequired {
-            file?: ReadStream;
+            /* Should be a ReadStream, unsure how to import fs without jeopardizing the module structure */
+            file?: any;
             content?: string;
             filetype?: FileType;
             filename: string;
@@ -1288,7 +1287,8 @@ declare module slack {
         export interface UsersSetActiveParameters extends ParametersAuthRequired { }
         export interface UsersSetActiveResponse extends Response { }
         export interface UsersSetPhotoParameters extends ParametersAuthRequired {
-            image: ReadStream;
+            /* Should be a ReadStream, unsure how to import fs without jeopardizing the module structure */            
+            image: any;
             crop_x?: number;
             crop_y?: number;
             crop_w?: number;

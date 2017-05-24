@@ -5,7 +5,6 @@ import { URL } from 'url';
 
 import { EventsApi, WebApi } from './api';
 import PluginService from '../service';
-import { slack } from './slack';
 
 export default class Slack extends PluginService {
     router(app): Router {
