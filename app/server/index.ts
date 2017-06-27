@@ -17,7 +17,6 @@ const app = next({
 const handle = app.getRequestHandler();
 
 export default async function () {
-    const staticFiles = fs.readdirSync(staticPath);
     await app.prepare();
 
     const server = new Koa()
